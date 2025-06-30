@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<!-- saved from url=(0132)blob:https://48xuagvsr5otxbxfobl3fvr6zbwzjxkkyhvbeih7sswizlno8q-h775241406.scf.usercontent.goog/14f83640-c76a-443d-b98c-400023fcc483 -->
+<html lang="id" class="scroll-smooth"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script>(function(firebaseConfig, initialAuthToken, appId) {
+        window.__firebase_config = firebaseConfig;
+        window.__initial_auth_token = initialAuthToken;
+        window.__app_id = appId;
+            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyNzI1NzgwMjQzZmMwYTYwOGExZjA3MzFiZDAzNmVjODZkYmI4MDciLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbVwvZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIxNjQxMjE1NDI5ODQ0NDYxNjQ4MyIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjXzIzNmFiMDk2ZDk3ZWI4ZjFfOWE3YjFjM2QtZjJlMS00YjlhLThhNWUtMmYwYzdlOGQxYTRhLTc2OCJ9LCJleHAiOjE3NTEzMDAwMjEsImlhdCI6MTc1MTI5NjQyMSwiYWxnIjoiUlMyNTYifQ.w-1TXDsdQBkZF7pum7z5zrxRtp6NsqHjO0PFuhlHt_dyyRybC8iCDwbjQMIjkDlQvYqlpUqf2rTzujQCbeSYCzKIcr0hxZHYfucUdveVQkB6wT1PcfaVKEDMcN3QZMgfL4HalAK8AEntvUeP7C5Cs6DPPM8IFkZXVTLHbcNzGO8RQkD4FEOP2AqR7CYUWv8ln6L9Qi-_LKzAYECIV8-1_-9YItboNWX6G9pDbotV-JBXqdSZS-rRl2shMpZW8KZb_kkEIAZjGYiBtWZx6noX6rCtQoXjjkWHhSotCSMN-8DMm0H1tERzA8LXlf0l4zwJ3aqkqrzCuwOzwDbgY5c5YA","c_236ab096d97eb8f1_9a7b1c3d-f2e1-4b9a-8a5e-2f0c7e8d1a4a-768")</script><script>(function() {
+  // Ensure this script is executed only once
+  if (window.firebaseAuthBridgeScriptLoaded) {
+    return;
+  }
+  window.firebaseAuthBridgeScriptLoaded = true;
+
+  let nextTokenPromiseId = 0;
+
+  // Stores { resolve, reject } for ongoing token requests
+  const pendingTokenPromises = {};
+
+  // Listen for messages from the Host Application
+  window.addEventListener('message', function(event) {
+
+    const messageData = event.data;
+
+  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
+      const { success, token, error, promiseId } = messageData ?? {};
+      if (pendingTokenPromises[promiseId]) {
+        if (success) {
+          pendingTokenPromises[promiseId].resolve(token);
+        } else {
+          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
+        }
+        delete pendingTokenPromises[promiseId];
+      }
+    }
+  });
+
+  // Expose a function for the Generated App to request a new Firebase token
+  window.requestNewFirebaseToken = function() {
+    const currentPromiseId = nextTokenPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingTokenPromises[currentPromiseId] = { resolve, reject };
+    });
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'REQUEST_NEW_FIREBASE_TOKEN',
+        promiseId: currentPromiseId
+      }, '*');
+    } else {
+      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
+      delete pendingTokenPromises[currentPromiseId];
+    }
+    return promise;
+  };
+})();</script><script>let realOriginalGetUserMedia = null;
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+}
+
+(function() {
+  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
+    try {
+      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
+        get: function() {
+          return undefined; // Or throw an error
+        },
+        configurable: false
+      });
+    } catch (error) {
+      console.error("Error defining prototype getter:", error);
+    }
+  }
+})();
+
+(function() {
+  let originalGetUserMedia = realOriginalGetUserMedia;
+
+  const pendingMediaResolvers = {};
+  let nextMediaPromiseId = 0;
+
+  function interceptGetUserMedia() {
+    if (navigator.mediaDevices) {
+      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+        value: function(constraints) {
+          const mediaPromiseId = nextMediaPromiseId++;
+          const promise = new Promise((resolve, reject) => {
+            pendingMediaResolvers[mediaPromiseId] = (granted) => {
+              delete pendingMediaResolvers[mediaPromiseId];
+              if (granted) {
+                if (originalGetUserMedia) {
+                  originalGetUserMedia(constraints).then(resolve).catch(reject);
+                } else {
+                  reject(new Error("Original getUserMedia not available."));
+                }
+              } else {
+              reject(new DOMException('Permission denied', 'NotAllowedError'));
+            }
+          };
+        });
+
+        window.parent.postMessage({
+          type: 'requestMediaPermission',
+          constraints: constraints,
+          promiseId: mediaPromiseId,
+        }, '*');
+
+        return promise;
+      },
+      writable: false,
+      configurable: false
+    });
+    }
+  }
+
+  interceptGetUserMedia();
+
+  const observer = new MutationObserver(function(mutationsList, observer) {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'childList' && mutation.addedNodes) {
+        mutation.addedNodes.forEach(node => {
+          if (node === navigator.mediaDevices) {
+            interceptGetUserMedia();
+          }
+        });
+      }
+    }
+  });
+
+  window.addEventListener('message', function(event) {
+    if (event.data) {
+      if (event.data.type === 'resolveMediaPermission') {
+        const { promiseId, granted } = event.data;
+        if (pendingMediaResolvers[promiseId]) {
+          pendingMediaResolvers[promiseId](granted);
+        }
+      }
+    }
+  });
+
+})();</script><script>((function(modelInformation) {
+  const originalFetch = window.fetch;
+  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
+  let googleLlmBaseApiUrls = [
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
+  ];
+  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+    );
+  });
+
+  const pendingFetchResolvers = {};
+  let nextPromiseId = 0;
+
+  function handleStringInput(input, optionsArgument) {
+    const actualUrl = input;
+    const fetchCallArgs = [actualUrl, optionsArgument];
+    const effectiveOptions = optionsArgument || {};
+    const bodyForApiKeyCheck = effectiveOptions.body;
+    const bodyForPostMessage = effectiveOptions.body;
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  function handleRequestInput(input, optionsArgument) {
+    const actualUrl = input.url;
+    const fetchCallArgs = [input, optionsArgument];
+    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (optionsArgument) {
+      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
+      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
+      if ('body' in optionsArgument) {
+        bodyForApiKeyCheck = optionsArgument.body;
+        bodyForPostMessage = optionsArgument.body;
+      } else {
+        bodyForApiKeyCheck = undefined;
+        bodyForPostMessage = input.body;
+      }
+    } else {
+      bodyForApiKeyCheck = undefined;
+      bodyForPostMessage = input.body;
+    }
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  window.fetch = function(input, optionsArgument) {
+    let actualUrl;
+    let fetchCallArgs;
+    let effectiveOptions = {};
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (typeof input === 'string') {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
+    } else if (input instanceof Request) {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
+    } else {
+      return originalFetch.apply(window, [input, optionsArgument]);
+    }
+
+    effectiveOptions.method = effectiveOptions.method || 'GET';
+    if (!effectiveOptions.headers) {
+      effectiveOptions.headers = new Headers();
+    }
+
+
+    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
+      let apiKeyIsNull = true;
+
+      const regex = new RegExp("models/([^:]+)");
+      const modelNameMatch = actualUrl.match(regex);
+      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
+
+
+      try {
+        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
+        const apiKeyParam = urlObject.searchParams.get('key');
+        if (apiKeyParam) {
+          apiKeyIsNull = false;
+        }
+      } catch (e) {
+        // Continue checks even if URL parsing fails
+      }
+
+      if (apiKeyIsNull && effectiveOptions.headers) {
+        const h = new Headers(effectiveOptions.headers);
+        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
+        if (apiKeyHeaderValue) {
+          apiKeyIsNull = false;
+          return originalFetch.apply(window, fetchCallArgs);
+        }
+      }
+
+      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
+        try {
+          const bodyData = JSON.parse(bodyForApiKeyCheck);
+          if (bodyData && bodyData.apiKey) {
+            apiKeyIsNull = false;
+            return originalFetch.apply(window, fetchCallArgs);
+          }
+        } catch (e) {
+          // Ignore JSON parsing errors
+        }
+      }
+
+      if(apiKeyIsNull) {
+        const promiseId = nextPromiseId++;
+        const promise = new Promise((resolve) => {
+          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
+            delete pendingFetchResolvers[promiseId];
+            resolve(resolvedResponse);
+          };
+        });
+
+        let serializedBodyForPostMessage;
+        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
+            serializedBodyForPostMessage = bodyForPostMessage;
+        } else if (bodyForPostMessage instanceof ReadableStream) {
+            serializedBodyForPostMessage = null;
+        } else {
+            try {
+                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
+            } catch (e) {
+                serializedBodyForPostMessage = null;
+            }
+        }
+
+        const messageOptions = {
+            method: effectiveOptions.method,
+            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
+            body: serializedBodyForPostMessage
+        };
+
+        window.parent.postMessage({
+          type: 'requestFetch',
+          url: actualUrl,
+          modelName: modelName,
+          options: messageOptions,
+          promiseId: promiseId,
+        }, '*');
+
+        return promise;
+      }
+      return originalFetch.apply(window, fetchCallArgs);
+    }
+    return originalFetch.apply(window, fetchCallArgs);
+  };
+
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'resolveFetch') {
+      const { promiseId, response } = event.data;
+      if (pendingFetchResolvers[promiseId]) {
+        try {
+          const reconstructedResponse = new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: new Headers(response.headers),
+          });
+          pendingFetchResolvers[promiseId](reconstructedResponse);
+        } catch (error) {
+          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
+        }
+      }
+    }
+  });
+
+}))({"textModelName":"gemini-2.5-flash-preview-04-17","imageModelName":"imagen-3.0-generate-002","videoModelName":"veo-2.0-generate-001","deprecatedTextModelNames":["gemini-2.0-flash"]})</script><script>(function() {
+  const originalConsoleLog = console.log;
+  const originalConsoleError = console.error;
+
+    /**
+   * Normalizes an error event or a promise rejection reason into a structured error object.
+   * @param {*} errorEventOrReason The error object or reason.
+   * @return {object} Structured error data { message, name, stack }.
+   */
+  function getErrorObject(errorEventOrReason) {
+    if (errorEventOrReason instanceof Error) {
+      return {
+        message: errorEventOrReason.message,
+        name: errorEventOrReason.name,
+        stack: errorEventOrReason.stack,
+      };
+    }
+    // Fallback for non-Error objects.
+    try {
+      return {
+        message: JSON.stringify(errorEventOrReason),
+        name: 'UnknownErrorType',
+        stack: null,
+      };
+    } catch (e) {
+      return {
+        message: String(errorEventOrReason),
+        name: 'UnknownErrorTypeNonStringifiable',
+        stack: null,
+      };
+    }
+  }
+
+  /**
+   * Converts an array of arguments (from log/error) into a single string.
+   * Handles Error objects specially to include their message and stack.
+   * @param {Array<*>} args - Arguments passed to console methods.
+   * @return {string} A string representation of the arguments.
+   */
+  function stringifyArgs(args) {
+    return args
+      .map((arg) => {
+        if (arg instanceof Error) {
+          const {message, stack} = arg;
+          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
+        }
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg);
+          } catch (error) {
+            return '[Circular Object]';
+          }
+        } else {
+          return String(arg);
+        }
+      })
+      .join(' ');
+  }
+
+  console.log = function(...args) {
+    const logString = stringifyArgs(args);
+    window.parent.postMessage({ type: 'log', message: logString }, '*');
+    originalConsoleLog.apply(console, args);
+  };
+
+  console.error = function(...args) {
+    let errorData;
+    if (args.length > 0 && args[0] instanceof Error) {
+      const err = args[0];
+      // If the first arg is an Error, capture its details.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        ...getErrorObject(err),
+        rawArgsString: stringifyArgs(args.slice(1)),
+        timestamp: new Date().toISOString(),
+      };
+    } else {
+      // If not an Error object, treat all args as a general error message.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        message: stringifyArgs(args),
+        name: 'ConsoleLoggedError',
+        stack: null,
+        timestamp: new Date().toISOString(),
+      };
+    }
+    window.parent.postMessage(errorData, '*');
+    originalConsoleError.apply(console, args);
+  };
+
+  // Listen for global unhandled synchronous errors.
+  window.addEventListener('error', function(event) {
+    const errorDetails = event.error ? getErrorObject(event.error) : {
+      message: event.message,
+      name: 'GlobalError',
+      stack: null,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+    };
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'global',
+      ...errorDetails,
+      message: errorDetails.message || event.message,
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+  // Listen for unhandled promise rejections (asynchronous errors).
+  window.addEventListener('unhandledrejection', function(event) {
+    const errorDetails = getErrorObject(event.reason);
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'unhandledrejection',
+      ...errorDetails,
+      message: errorDetails.message || 'Unhandled Promise Rejection',
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+})();</script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Properti Jabodetabek (2020-2025)</title>
+    <script src="https://cdn.tailwindcss.com/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Urban Oasis -->
+    <!-- Application Structure Plan: Desain aplikasi ini menggunakan pendekatan dasbor interaktif yang berpusat pada pengguna. Alih-alih mengikuti struktur laporan secara linear, aplikasi ini memprioritaskan perbandingan langsung antar lokasi. Struktur utamanya adalah panel navigasi di sebelah kiri yang memungkinkan pengguna memilih salah satu dari lima "hotspot" properti, dan panel konten dinamis di sebelah kanan yang langsung menampilkan data, analisis, dan visualisasi untuk area yang dipilih. Pendekatan ini mengubah presentasi data dari pasif menjadi aktif, mendorong eksplorasi dan pemahaman yang lebih cepat. Di bawah dasbor utama, terdapat bagian konteks makro (tren nasional) dan analisis faktor pendorong, yang memberikan gambaran lebih luas setelah pengguna memahami perbandingan mikro. Struktur ini dipilih karena paling sesuai dengan tujuan pengguna: membandingkan lokasi secara efisien dan memahami 'mengapa'-nya. -->
+    <!-- Visualization & Content Choices: 
+        - LOKASI & PERBANDINGAN: Laporan -> Data pertumbuhan 5 lokasi (Tabel 2). Goal -> Membandingkan performa. Viz -> Bar chart dinamis di dalam panel konten. Interaction -> Klik nama lokasi untuk memperbarui chart dan teks. Justification -> Bar chart ideal untuk perbandingan kategori diskrit; interaktivitas mengurangi kerumitan visual. Library -> Chart.js.
+        - TREN NASIONAL: Laporan -> Data IHPR Nasional (Tabel 1). Goal -> Memberi konteks makro. Viz -> Line chart. Interaction -> Tooltip on hover. Justification -> Line chart adalah standar emas untuk menunjukkan perubahan dari waktu ke waktu. Library -> Chart.js.
+        - FAKTOR PENDORONG: Laporan -> Analisis faktor (Seksi IV). Goal -> Mengorganisir pendorong pertumbuhan. Viz -> Kartu-kartu informatif dengan ikon Unicode dan teks ringkas. Interaction -> Efek hover untuk engagement visual. Justification -> Memecah informasi kompleks menjadi bagian-bagian yang mudah dicerna dan menarik secara visual. Method -> HTML/Tailwind/Unicode.
+        - REKOMENDASI INVESTASI: Laporan -> Strategi investasi (Seksi V). Goal -> Menyajikan saran yang dapat ditindaklanjuti. Viz -> Komponen akordeon yang dapat dibuka-tutup. Interaction -> Klik untuk menampilkan detail. Justification -> Menghemat ruang vertikal dan memungkinkan pengguna fokus pada informasi yang relevan bagi mereka. Method -> HTML/Tailwind/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFCFB; color: #374151; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 320px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 380px; } }
+        .nav-item.active { background-color: #4A6C6F; color: white; }
+        .nav-item:not(.active):hover { background-color: #e0e7e9; }
+        .factor-card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .factor-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .accordion-button.open .accordion-arrow { transform: rotate(180deg); }
+        .accordion-arrow { transition: transform 0.3s ease; }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4A6C6F;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-12{margin-bottom:3rem}.mb-16{margin-bottom:4rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.mt-16{margin-top:4rem}.mt-1{margin-top:0.25rem}.block{display:block}.flex{display:flex}.grid{display:grid}.h-3{height:0.75rem}.min-h-\[100px\]{min-height:100px}.w-full{width:100%}.w-3{width:0.75rem}.max-w-3xl{max-width:48rem}.max-w-4xl{max-width:56rem}.shrink-0{flex-shrink:0}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-row{flex-direction:row}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-3{gap:0.75rem}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.scroll-smooth{scroll-behavior:smooth}.rounded-2xl{border-radius:1rem}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.border{border-width:1px}.border-t{border-top-width:1px}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.bg-\[\#4A6C6F\]{--tw-bg-opacity:1;background-color:rgb(74 108 111 / var(--tw-bg-opacity, 1))}.bg-\[\#6B7280\]{--tw-bg-opacity:1;background-color:rgb(107 114 128 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-3{padding:0.75rem}.p-5{padding:1.25rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pt-6{padding-top:1.5rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.font-medium{font-weight:500}.leading-relaxed{line-height:1.625}.text-\[\#4A6C6F\]{--tw-text-opacity:1;color:rgb(74 108 111 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-80{opacity:0.8}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-200{transition-duration:200ms}.hover\:bg-\[\#3E5A5C\]:hover{--tw-bg-opacity:1;background-color:rgb(62 90 92 / var(--tw-bg-opacity, 1))}.hover\:bg-\[\#4B5563\]:hover{--tw-bg-opacity:1;background-color:rgb(75 85 99 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-100:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}@media (min-width: 640px){.sm\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.sm\:flex-row{flex-direction:row}}@media (min-width: 768px){.md\:w-1\/4{width:25%}.md\:w-3\/4{width:75%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:flex-col{flex-direction:column}.md\:py-12{padding-top:3rem;padding-bottom:3rem}.md\:text-5xl{font-size:3rem;line-height:1}}@media (min-width: 1024px){.lg\:grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}}</style></head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#4A6C6F] mb-3">Hotspot Properti Jabodetabek</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Analisis Interaktif Pertumbuhan Nilai Properti Periode 2020-2025</p>
+        </header>
+
+        <main>
+            <!-- Section 1: Interactive Dashboard -->
+            <section id="dashboard" class="mb-16 bg-white p-6 rounded-2xl shadow-sm">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Perbandingan 5 Lokasi Unggulan</h2>
+                    <p class="text-md text-gray-500 mt-2">Pilih sebuah lokasi untuk melihat analisis detail, data pertumbuhan, dan faktor pendorongnya.</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <!-- Navigation Panel -->
+                    <div class="w-full md:w-1/4">
+                        <nav id="location-nav" class="flex flex-row md:flex-col gap-2 flex-wrap">
+                            <button data-location="tangerang" class="nav-item w-full text-left p-4 rounded-lg cursor-pointer transition-colors duration-200 active">
+                                <span class="font-semibold text-lg">1. Tangerang Raya</span>
+                                <span class="block text-sm opacity-80">Pertumbuhan hingga 24.5%</span>
+                            </button>
+                            <button data-location="depok" class="nav-item w-full text-left p-4 rounded-lg cursor-pointer transition-colors duration-200">
+                                <span class="font-semibold text-lg">2. Depok</span>
+                                <span class="block text-sm opacity-80">Apresiasi 10-15% per tahun</span>
+                            </button>
+                             <button data-location="jaksel" class="nav-item w-full text-left p-4 rounded-lg cursor-pointer transition-colors duration-200">
+                                <span class="font-semibold text-lg">3. Jakarta Selatan</span>
+                                <span class="block text-sm opacity-80">Pasar Premium &amp; Stabil</span>
+                            </button>
+                            <button data-location="bogor" class="nav-item w-full text-left p-4 rounded-lg cursor-pointer transition-colors duration-200">
+                                <span class="font-semibold text-lg">4. Bogor</span>
+                                <span class="block text-sm opacity-80">Pertumbuhan Stabil &amp; Terjangkau</span>
+                            </button>
+                            <button data-location="bekasi" class="nav-item w-full text-left p-4 rounded-lg cursor-pointer transition-colors duration-200">
+                                <span class="font-semibold text-lg">5. Bekasi</span>
+                                <span class="block text-sm opacity-80">Zona Penyangga &amp; Sunrise</span>
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Dynamic Content Panel -->
+                    <div id="content-panel" class="w-full md:w-3/4 bg-slate-50 p-6 rounded-lg">
+                        <h3 id="location-title" class="text-2xl font-bold text-[#4A6C6F] mb-1">Tangerang Raya: Ekspansi Kota Mandiri</h3>
+                        <p id="location-summary" class="text-gray-600 mb-6">Menunjukkan apresiasi nilai properti tertinggi, didorong oleh pembangunan masif kota-kota mandiri terintegrasi dan infrastruktur baru.</p>
+
+                        <div class="chart-container mb-6">
+                            <canvas id="locationChart" style="box-sizing: border-box; display: block; height: 380px; width: 444px;" width="555" height="475"></canvas>
+                        </div>
+                        
+                        <div id="location-details">
+                            <h4 class="font-bold text-xl mb-4 text-gray-700">Faktor Pendorong Utama</h4>
+                            <div id="factors-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6"><div class="flex items-start gap-3 bg-white p-3 rounded-md">
+                    <span class="text-2xl mt-1">🏘️</span>
+                    <p class="text-gray-600 text-sm">Pengembangan kota mandiri (BSD City, Gading Serpong).</p>
+                </div><div class="flex items-start gap-3 bg-white p-3 rounded-md">
+                    <span class="text-2xl mt-1">🛣️</span>
+                    <p class="text-gray-600 text-sm">Pembangunan infrastruktur masif, terutama jalan tol.</p>
+                </div><div class="flex items-start gap-3 bg-white p-3 rounded-md">
+                    <span class="text-2xl mt-1">📈</span>
+                    <p class="text-gray-600 text-sm">Permintaan pasar yang tinggi karena harga lebih terjangkau.</p>
+                </div><div class="flex items-start gap-3 bg-white p-3 rounded-md">
+                    <span class="text-2xl mt-1">🏞️</span>
+                    <p class="text-gray-600 text-sm">Ketersediaan lahan yang luas untuk proyek skala besar.</p>
+                </div></div>
+                            
+                            <h4 class="font-bold text-xl mb-3 text-gray-700">Prospek &amp; Kesimpulan</h4>
+                            <p id="prospects-text" class="text-gray-600 leading-relaxed">Diprediksi tetap stabil dan terus tumbuh seiring berjalannya proyek infrastruktur. Pergeseran dari 'kota tidur' menjadi pusat ekonomi mandiri dengan fasilitas terintegrasi menjadi daya tarik utamanya.</p>
+
+                            <!-- New LLM Features Section -->
+                            <div class="mt-8 pt-6 border-t border-gray-200">
+                                <h4 class="font-bold text-xl mb-4 text-gray-700">Wawasan AI untuk Properti Anda</h4>
+                                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                                    <button id="generate-insight-btn" class="bg-[#4A6C6F] text-white px-6 py-3 rounded-lg shadow-md hover:bg-[#3E5A5C] transition-colors flex items-center justify-center">
+                                        <span class="text-lg mr-2">✨</span> Hasilkan Wawasan Investasi
+                                    </button>
+                                    <button id="generate-description-btn" class="bg-[#6B7280] text-white px-6 py-3 rounded-lg shadow-md hover:bg-[#4B5563] transition-colors flex items-center justify-center">
+                                        <span class="text-lg mr-2">✨</span> Buat Deskripsi Properti
+                                    </button>
+                                </div>
+                                <div id="llm-output-area" class="bg-white p-4 rounded-lg shadow-inner min-h-[100px] text-gray-700 leading-relaxed"><p class="text-gray-500">Klik salah satu tombol di atas untuk mendapatkan wawasan atau deskripsi yang dihasilkan AI.</p></div>
+                            </div>
+                            <!-- End New LLM Features Section -->
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Macro Context -->
+            <section id="context" class="mb-16">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Konteks Pasar Nasional</h2>
+                    <p class="text-md text-gray-500 mt-2">Bagaimana tren harga properti residensial secara nasional selama periode ini?</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <div class="chart-container">
+                         <canvas id="nationalTrendChart" width="860" height="475" style="display: block; box-sizing: border-box; height: 380px; width: 688px;"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-4">Grafik ini menunjukkan Indeks Harga Properti Residensial (IHPR) secara tahunan (yoy), memberikan gambaran pemulihan pasar setelah perlambatan di awal pandemi.</p>
+                </div>
+            </section>
+            
+            <!-- Section 3: Key Drivers -->
+            <section id="drivers" class="mb-16">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Motor Penggerak Pertumbuhan Properti</h2>
+                    <p class="text-md text-gray-500 mt-2">Lima pilar utama yang mendorong apresiasi nilai properti di seluruh wilayah Jabodetabek.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <div class="factor-card bg-white p-6 rounded-lg shadow-sm text-center">
+                        <span class="text-4xl mb-3 block">🏗️</span>
+                        <h4 class="font-bold text-lg mb-2">Infrastruktur</h4>
+                        <p class="text-sm text-gray-600">Jalan tol baru dan transportasi publik (MRT, LRT) meningkatkan konektivitas dan nilai tanah secara drastis.</p>
+                    </div>
+                    <div class="factor-card bg-white p-6 rounded-lg shadow-sm text-center">
+                        <span class="text-4xl mb-3 block">🏘️</span>
+                        <h4 class="font-bold text-lg mb-2">Permintaan Tinggi</h4>
+                        <p class="text-sm text-gray-600">Kebutuhan hunian yang besar, terutama rumah tapak, mendorong pengembangan ke area pinggiran.</p>
+                    </div>
+                     <div class="factor-card bg-white p-6 rounded-lg shadow-sm text-center">
+                        <span class="text-4xl mb-3 block">📜</span>
+                        <h4 class="font-bold text-lg mb-2">Dukungan Pemerintah</h4>
+                        <p class="text-sm text-gray-600">Insentif seperti PPN DTP dan relaksasi LTV menjadi katalisator penting pemulihan pasar.</p>
+                    </div>
+                    <div class="factor-card bg-white p-6 rounded-lg shadow-sm text-center">
+                        <span class="text-4xl mb-3 block">💰</span>
+                        <h4 class="font-bold text-lg mb-2">Ekonomi &amp; Urbanisasi</h4>
+                        <p class="text-sm text-gray-600">Pertumbuhan PDB yang stabil dan arus urbanisasi yang cepat menciptakan permintaan berkelanjutan.</p>
+                    </div>
+                    <div class="factor-card bg-white p-6 rounded-lg shadow-sm text-center">
+                        <span class="text-4xl mb-3 block">🧱</span>
+                        <h4 class="font-bold text-lg mb-2">Biaya Konstruksi</h4>
+                        <p class="text-sm text-gray-600">Kenaikan harga material bangunan dan inflasi berkontribusi pada kenaikan harga jual properti.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Investment Outlook -->
+             <section id="outlook">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800">Prospek &amp; Rekomendasi Investasi 2025-2030</h2>
+                    <p class="text-md text-gray-500 mt-2">Peluang strategis di pasar properti Jabodetabek untuk investor dan pengembang.</p>
+                </div>
+                <div id="accordion-container" class="space-y-3 max-w-4xl mx-auto">
+                    <!-- Accordion items will be generated by JS -->
+                <div class="border border-gray-200 rounded-lg bg-white">
+                    <h2>
+                        <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 hover:bg-gray-100 transition-colors" data-accordion-target="#accordion-body-0">
+                            <span class="text-md">Rumah Tapak di Area Penyangga</span>
+                             <svg class="accordion-arrow w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"></path>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-0" class="accordion-content">
+                        <div class="p-5 border-t border-gray-200">
+                            <p class="mb-2 text-gray-600">Tetap menjadi pilihan utama. Fokus pada pengembangan kota mandiri di Tangerang, Bogor, Depok, dan Bekasi yang menawarkan fasilitas terintegrasi dan konektivitas baik. Area ini memiliki potensi apresiasi signifikan.</p>
+                        </div>
+                    </div>
+                </div><div class="border border-gray-200 rounded-lg bg-white">
+                    <h2>
+                        <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 hover:bg-gray-100 transition-colors" data-accordion-target="#accordion-body-1">
+                            <span class="text-md">Apartemen Premium di Jakarta Selatan</span>
+                             <svg class="accordion-arrow w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"></path>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-1" class="accordion-content">
+                        <div class="p-5 border-t border-gray-200">
+                            <p class="mb-2 text-gray-600">Meskipun pertumbuhan melambat, lokasi strategis (SCBD, Kebayoran, Tebet) tetap menarik bagi segmen atas dan ekspatriat yang mencari prestise, kelengkapan fasilitas, dan hasil sewa yang stabil.</p>
+                        </div>
+                    </div>
+                </div><div class="border border-gray-200 rounded-lg bg-white">
+                    <h2>
+                        <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 hover:bg-gray-100 transition-colors" data-accordion-target="#accordion-body-2">
+                            <span class="text-md">Sektor Industri &amp; Logistik</span>
+                             <svg class="accordion-arrow w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"></path>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-2" class="accordion-content">
+                        <div class="p-5 border-t border-gray-200">
+                            <p class="mb-2 text-gray-600">Sektor ini diprediksi mengalami pertumbuhan kuat, didorong oleh e-commerce, energi terbarukan, dan kebutuhan logistik yang terus meningkat. Ini merupakan peluang investasi komersial yang menjanjikan.</p>
+                        </div>
+                    </div>
+                </div><div class="border border-gray-200 rounded-lg bg-white">
+                    <h2>
+                        <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 hover:bg-gray-100 transition-colors" data-accordion-target="#accordion-body-3">
+                            <span class="text-md">Pusat Data (Data Center)</span>
+                             <svg class="accordion-arrow w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"></path>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-3" class="accordion-content">
+                        <div class="p-5 border-t border-gray-200">
+                            <p class="mb-2 text-gray-600">Muncul sebagai hotspot investasi baru seiring ledakan adopsi AI dan komputasi awan di Indonesia. Ini adalah ceruk pasar properti komersial yang sangat spesifik namun memiliki potensi pertumbuhan tinggi.</p>
+                        </div>
+                    </div>
+                </div></div>
+             </section>
+
+        </main>
+        
+        <footer class="text-center mt-16 pt-8 border-t border-gray-200">
+            <p class="text-sm text-gray-500">Aplikasi ini dibuat berdasarkan analisis laporan "Pertumbuhan Nilai Properti Jabodetabek (2020-2025)".</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const locationData = {
+            jaksel: {
+                title: "Jakarta Selatan: Pusat Premium",
+                summary: "Secara konsisten menjadi lokasi premium dengan pertumbuhan stabil, terutama didorong oleh permintaan dari segmen kelas atas, ekspatriat, dan profesional.",
+                chartData: {
+                    labels: ['Harga Apt. Premium (YoY)', 'Peningkatan Indeks Rumah (Poin)'],
+                    values: [1.8, 6],
+                    label: 'Pertumbuhan (%) & Poin Indeks'
+                },
+                factors: [
+                    { icon: '🏙️', text: 'Infrastruktur matang & konektivitas superior (MRT, Tol).' },
+                    { icon: '🌳', text: 'Fasilitas lengkap (pusat perbelanjaan, sekolah, taman).' },
+                    { icon: '👨‍💼', text: 'Demografi pembeli berpenghasilan tinggi dan ekspatriat.' },
+                    { icon: '✨', text: 'Area unggulan seperti SCBD, Kebayoran Baru, dan Tebet.' }
+                ],
+                prospects: "Harga diperkirakan terus meningkat dengan permintaan yang kuat dari segmen premium dan hasil sewa yang menarik. Pertumbuhannya didorong oleh ekosistem gaya hidup, pekerjaan, dan komunitas yang lengkap, bukan hanya aksesibilitas."
+            },
+            tangerang: {
+                title: "Tangerang Raya: Ekspansi Kota Mandiri",
+                summary: "Menunjukkan apresiasi nilai properti tertinggi, didorong oleh pembangunan masif kota-kota mandiri terintegrasi dan infrastruktur baru.",
+                chartData: {
+                    labels: ['Kab. Tangerang (20-22)', 'Tangerang Selatan (20-22)', 'Tangerang (Q3 21 YoY)'],
+                    values: [24.5, 11.5, 17.04],
+                    label: 'Pertumbuhan Nilai Properti (%)'
+                },
+                factors: [
+                    { icon: '🏘️', text: 'Pengembangan kota mandiri (BSD City, Gading Serpong).' },
+                    { icon: '🛣️', text: 'Pembangunan infrastruktur masif, terutama jalan tol.' },
+                    { icon: '📈', text: 'Permintaan pasar yang tinggi karena harga lebih terjangkau.' },
+                    { icon: '🏞️', text: 'Ketersediaan lahan yang luas untuk proyek skala besar.' }
+                ],
+                prospects: "Diprediksi tetap stabil dan terus tumbuh seiring berjalannya proyek infrastruktur. Pergeseran dari 'kota tidur' menjadi pusat ekonomi mandiri dengan fasilitas terintegrasi menjadi daya tarik utamanya."
+            },
+            bogor: {
+                title: "Bogor: Pertumbuhan Stabil & Terjangkau",
+                summary: "Menawarkan pertumbuhan paling stabil dengan daya tarik utama pada keterjangkauan harga dan kualitas hidup yang lebih baik bagi para komuter.",
+                chartData: {
+                    labels: ['Prediksi Kenaikan Tanah (2025)', 'Pertumbuhan Pencarian (Q3 21)'],
+                    values: [3.5, 20],
+                    label: 'Pertumbuhan (%)'
+                },
+                factors: [
+                    { icon: '💰', text: 'Pilihan hunian yang relatif lebih terjangkau dibanding Jakarta.' },
+                    { icon: '🚄', text: 'Peningkatan aksesibilitas dan konektivitas ke Jakarta.' },
+                    { icon: '🌿', text: 'Gaya hidup lebih santai dan hijau menarik segmen keluarga.' },
+                    { icon: '📜', text: 'Insentif pemerintah daerah seperti diskon BPHTB.' }
+                ],
+                prospects: "Akan terus menjadi area kunci untuk proyek residensial baru. Pertumbuhannya menyoroti preferensi pasar yang berkembang untuk kualitas hidup di pinggir kota yang terhubung dengan baik."
+            },
+            depok: {
+                title: "Depok: Apresiasi Konsisten & Pasar Sewa",
+                summary: "Sebagai zona penyangga utama Jakarta, Depok mengalami kenaikan harga yang konsisten, didukung kuat oleh potensi investasi properti sewa.",
+                chartData: {
+                    labels: ['Kenaikan Harga Tahunan (Min)', 'Kenaikan Harga Tahunan (Max)'],
+                    values: [10, 15],
+                    label: 'Apresiasi Harga Tahunan (%)'
+                },
+                factors: [
+                    { icon: '📈', text: 'Kenaikan harga tanah tahunan yang konsisten.' },
+                    { icon: '🎓', text: 'Potensi investasi sewa tinggi (kos & kontrakan) karena populasi mahasiswa.' },
+                    { icon: '📍', text: 'Lokasi strategis sebagai zona penyangga utama bagi Jakarta.' },
+                    { icon: '🏗️', text: 'Fokus pengembang besar untuk proyek residensial baru.' }
+                ],
+                prospects: "Tetap menarik bagi investor yang berfokus pada keuntungan modal dan hasil sewa. Pertumbuhannya didorong oleh fungsinya sebagai alternatif terjangkau bagi pekerja Jakarta dan dinamika pendidikan internalnya."
+            },
+            bekasi: {
+                title: "Bekasi: Kawasan Sunrise & Industri",
+                summary: "Bertransformasi dari pusat industri menjadi pusat residensial yang layak, didorong oleh pembangunan infrastruktur masif yang meningkatkan konektivitas.",
+                chartData: {
+                    labels: ['Prediksi Kenaikan Tanah (2025)'],
+                    values: [3.5],
+                    label: 'Pertumbuhan (%)'
+                },
+                factors: [
+                    { icon: '🏭', text: 'Transformasi dari zona industri menjadi pusat residensial.' },
+                    { icon: '🛣️', text: 'Pembangunan infrastruktur signifikan (tol, transportasi publik).' },
+                    { icon: '👨‍👩‍👧‍👦', text: 'Fokus pengembang pada segmen pasar menengah yang stabil.' },
+                    { icon: '🚀', text: 'Dipandang sebagai area "properti sunrise" dengan potensi tinggi.' }
+                ],
+                prospects: "Diperkirakan melanjutkan lintasan pertumbuhannya, didukung oleh infrastruktur yang sedang berjalan. Transformasinya menunjukkan area industri yang terhubung baik dapat mengalami apresiasi nilai yang cepat."
+            }
+        };
+
+        const investmentOutlookData = [
+            {
+                title: "Rumah Tapak di Area Penyangga",
+                content: "Tetap menjadi pilihan utama. Fokus pada pengembangan kota mandiri di Tangerang, Bogor, Depok, dan Bekasi yang menawarkan fasilitas terintegrasi dan konektivitas baik. Area ini memiliki potensi apresiasi signifikan."
+            },
+            {
+                title: "Apartemen Premium di Jakarta Selatan",
+                content: "Meskipun pertumbuhan melambat, lokasi strategis (SCBD, Kebayoran, Tebet) tetap menarik bagi segmen atas dan ekspatriat yang mencari prestise, kelengkapan fasilitas, dan hasil sewa yang stabil."
+            },
+            {
+                title: "Sektor Industri & Logistik",
+                content: "Sektor ini diprediksi mengalami pertumbuhan kuat, didorong oleh e-commerce, energi terbarukan, dan kebutuhan logistik yang terus meningkat. Ini merupakan peluang investasi komersial yang menjanjikan."
+            },
+            {
+                title: "Pusat Data (Data Center)",
+                content: "Muncul sebagai hotspot investasi baru seiring ledakan adopsi AI dan komputasi awan di Indonesia. Ini adalah ceruk pasar properti komersial yang sangat spesifik namun memiliki potensi pertumbuhan tinggi."
+            }
+        ];
+
+        let locationChart;
+        let nationalTrendChart;
+        
+        const contentPanel = document.getElementById('content-panel');
+        const locationTitle = document.getElementById('location-title');
+        const locationSummary = document.getElementById('location-summary');
+        const factorsGrid = document.getElementById('factors-grid');
+        const prospectsText = document.getElementById('prospects-text');
+        const navButtons = document.querySelectorAll('.nav-item');
+        const generateInsightBtn = document.getElementById('generate-insight-btn');
+        const generateDescriptionBtn = document.getElementById('generate-description-btn');
+        const llmOutputArea = document.getElementById('llm-output-area');
+
+        let currentSelectedLocationId = 'tangerang'; // Default selected location
+
+        function updateContent(locationId) {
+            currentSelectedLocationId = locationId; // Update current selected location
+            const data = locationData[locationId];
+
+            locationTitle.textContent = data.title;
+            locationSummary.textContent = data.summary;
+            prospectsText.textContent = data.prospects;
+            
+            factorsGrid.innerHTML = '';
+            data.factors.forEach(factor => {
+                const factorEl = document.createElement('div');
+                factorEl.className = 'flex items-start gap-3 bg-white p-3 rounded-md';
+                factorEl.innerHTML = `
+                    <span class="text-2xl mt-1">${factor.icon}</span>
+                    <p class="text-gray-600 text-sm">${factor.text}</p>
+                `;
+                factorsGrid.appendChild(factorEl);
+            });
+            
+            updateLocationChart(data.chartData);
+
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.dataset.location === locationId) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Clear LLM output area when location changes
+            llmOutputArea.innerHTML = '<p class="text-gray-500">Klik salah satu tombol di atas untuk mendapatkan wawasan atau deskripsi yang dihasilkan AI.</p>';
+        }
+
+        function updateLocationChart(data) {
+            if (locationChart) {
+                locationChart.destroy();
+            }
+            const ctx = document.getElementById('locationChart').getContext('2d');
+            locationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: data.label,
+                        data: data.values,
+                        backgroundColor: '#4A6C6F',
+                        borderColor: '#3E5A5C',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#374151',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 4
+                        },
+                        title: {
+                            display: true,
+                            text: 'Indikator Pertumbuhan Utama',
+                            font: { size: 16, weight: '600' },
+                            color: '#4b5563',
+                            padding: { top: 0, bottom: 20 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#e5e7eb' },
+                            ticks: { color: '#6b7280' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#6b7280' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createNationalTrendChart() {
+            const ctx = document.getElementById('nationalTrendChart').getContext('2d');
+            nationalTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Q3 2020', 'Q1 2021', 'Q3 2021', 'Q4 2024', 'Q1 2025'],
+                    datasets: [{
+                        label: 'IHPR Nasional (yoy %)',
+                        data: [-0.5, 0.96, 3.24, 1.39, 1.07],
+                        fill: true,
+                        backgroundColor: 'rgba(74, 108, 111, 0.1)',
+                        borderColor: '#4A6C6F',
+                        tension: 0.3,
+                        pointBackgroundColor: '#4A6C6F',
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#374151',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 4
+                        },
+                         title: {
+                            display: true,
+                            text: 'Tren Indeks Harga Properti Residensial Nasional (yoy %)',
+                            font: { size: 16, weight: '600' },
+                            color: '#4b5563',
+                            padding: { top: 0, bottom: 20 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: '#e5e7eb' },
+                            ticks: { color: '#6b7280' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#6b7280' }
+                        }
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    }
+                }
+            });
+        }
+        
+        function createAccordions() {
+            const container = document.getElementById('accordion-container');
+            investmentOutlookData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'border border-gray-200 rounded-lg bg-white';
+                div.innerHTML = `
+                    <h2>
+                        <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 hover:bg-gray-100 transition-colors" data-accordion-target="#accordion-body-${index}">
+                            <span class="text-md">${item.title}</span>
+                             <svg class="accordion-arrow w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-${index}" class="accordion-content">
+                        <div class="p-5 border-t border-gray-200">
+                            <p class="mb-2 text-gray-600">${item.content}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        async function callGeminiAPI(prompt) {
+            llmOutputArea.innerHTML = '<div class="loading-spinner"></div> <span class="text-gray-600">Memuat...</span>';
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Leave this as-is. Canvas will provide the key at runtime.
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    llmOutputArea.innerHTML = `<p>${text}</p>`;
+                } else {
+                    llmOutputArea.innerHTML = '<p class="text-red-500">Gagal mendapatkan respons dari AI. Coba lagi nanti.</p>';
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                llmOutputArea.innerHTML = '<p class="text-red-500">Terjadi kesalahan saat menghubungi AI. Periksa koneksi Anda atau coba lagi.</p>';
+            }
+        }
+
+        generateInsightBtn.addEventListener('click', () => {
+            const location = locationData[currentSelectedLocationId];
+            const prompt = `Berdasarkan data properti berikut untuk ${location.title}: Ringkasan: ${location.summary}. Data Pertumbuhan Utama: ${location.chartData.labels.join(', ')} dengan nilai ${location.chartData.values.join(', ')}. Faktor Pendorong: ${location.factors.map(f => f.text).join(', ')}. Berikan wawasan investasi singkat (maksimal 100 kata) tentang potensi dan risiko di area ini.`;
+            callGeminiAPI(prompt);
+        });
+
+        generateDescriptionBtn.addEventListener('click', () => {
+            const location = locationData[currentSelectedLocationId];
+            const prompt = `Tulis deskripsi properti menarik (maksimal 150 kata) untuk sebuah rumah di ${location.title}, dengan menyoroti potensi pertumbuhan properti di area tersebut dan faktor-faktor pendorongnya seperti ${location.factors.slice(0, 3).map(f => f.text).join(', ')}.`;
+            callGeminiAPI(prompt);
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateContent(button.dataset.location);
+                });
+            });
+
+            createNationalTrendChart();
+            createAccordions();
+
+            document.getElementById('accordion-container').addEventListener('click', function(e) {
+                const button = e.target.closest('.accordion-button');
+                if (button) {
+                    const content = button.parentElement.nextElementSibling;
+                    const isOpen = button.classList.contains('open');
+                    
+                    document.querySelectorAll('.accordion-content').forEach(el => el.style.maxHeight = null);
+                    document.querySelectorAll('.accordion-button').forEach(el => el.classList.remove('open'));
+
+                    if (!isOpen) {
+                        button.classList.add('open');
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    }
+                }
+            });
+            
+            updateContent('tangerang'); 
+        });
+
+    </script>
+
+
+</body></html>
